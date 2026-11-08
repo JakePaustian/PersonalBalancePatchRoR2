@@ -3,7 +3,7 @@
     <!-- RoR2 runs on Unity's Mono runtime; netstandard2.1 is what it can load. -->
     <TargetFramework>netstandard2.1</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <AssemblyName>FirstMod</AssemblyName>
+    <AssemblyName>PersonalBalancePatch</AssemblyName>
     <Nullable>disable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DebugType>portable</DebugType>

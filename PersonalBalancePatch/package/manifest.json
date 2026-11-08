@@ -1,0 +1,10 @@
+{
+    "name": "PersonalBalancePatch",
+    "version_number": "1.0.0",
+    "website_url": "",
+    "description": "Personal balance patch: per-run lunar coins, scaling kill bounty, buffed Singularity Band and Commando Dive, reworked Defiant Gouge and Transcendence, shield-aware fall damage. Everyone in a lobby needs it.",
+    "dependencies": [
+        "RiskofThunder-R2API_Core-5.3.0",
+        "RiskofThunder-R2API_Language-1.1.0"
+    ]
+}

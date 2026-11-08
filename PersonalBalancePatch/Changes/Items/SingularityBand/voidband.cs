@@ -5,7 +5,7 @@ using BepInEx.Bootstrap;
 using RoR2;
 using RoR2.Projectile;
 
-namespace FirstMod.Changes.SingularityBand
+namespace PersonalBalancePatch.Changes.Items.SingularityBand
 { 
     public class VoidBand
     {
@@ -53,7 +53,7 @@ namespace FirstMod.Changes.SingularityBand
             var table = (IDictionary)defsType.GetField("allItemDefinitions").GetValue(null);
 
             object def = table[(int)DLC1Content.Items.ElementalRingVoid.itemIndex];
-            if (def == null) { FirstModPlugin.Log.LogWarning("LookingGlass has no Singularity Band entry."); return; }
+            if (def == null) { PersonalBalancePatchPlugin.Log.LogWarning("LookingGlass has no Singularity Band entry."); return; }
             var defType = def.GetType();
 
             // Add a "Recharge Time" row once (the three lists must stay the same length).
@@ -71,7 +71,7 @@ namespace FirstMod.Changes.SingularityBand
             Func<int, List<float>> calc = stack => new List<float> { stack * 1.5f, 1f, 13f};
             defType.GetField("calculateValuesFlat").SetValue(def, calc);
 
-            FirstModPlugin.Log.LogInfo("Patched LookingGlass stats for Singularity Band.");
+            PersonalBalancePatchPlugin.Log.LogInfo("Patched LookingGlass stats for Singularity Band.");
         }
     }
 }

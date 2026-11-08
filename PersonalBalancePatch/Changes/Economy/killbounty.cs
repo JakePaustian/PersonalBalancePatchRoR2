@@ -1,7 +1,7 @@
 using RoR2;
 using UnityEngine;
 
-namespace FirstMod.Changes.Economy {
+namespace PersonalBalancePatch.Changes.Economy {
     public class KillBounty {
 
         private const float VanillaMultiplier = 2f;
@@ -28,7 +28,7 @@ namespace FirstMod.Changes.Economy {
                 uint paid = (uint)Mathf.Max(1f, Mathf.Round(scaled));
                 self.goldReward = paid;
 
-                FirstModPlugin.Log.LogInfo(
+                PersonalBalancePatchPlugin.Log.LogInfo(
                     $"[KillBounty] stage={Run.instance.stageClearCount + 1} t={Run.instance.GetRunStopwatch() / 60f:F1}m " +
                     $"coeff={coeff:F2} mult={m:F2} chest(25)={Run.instance.GetDifficultyScaledCost(25)} gold={vanilla}->{paid}");
             }

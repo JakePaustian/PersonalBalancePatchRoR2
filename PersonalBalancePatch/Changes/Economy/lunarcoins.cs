@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using HarmonyLib;
 
-namespace FirstMod.Changes.Economy
+namespace PersonalBalancePatch.Changes.Economy
 { 
     public class LunarCoinChanges
     {

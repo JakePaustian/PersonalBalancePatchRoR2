@@ -1,0 +1,11 @@
+# Decompiled game source: the game's code, not ours. Never commit or publish it.
+GameSource/
+
+# Build output
+**/bin/
+**/obj/
+**/obj-build/
+
+# Packaged mod zips
+dist/
+*.zip
