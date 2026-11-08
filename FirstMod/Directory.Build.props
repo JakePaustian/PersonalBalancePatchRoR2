@@ -1,0 +1,12 @@
+<Project>
+  <!-- Build mode (-p:R2_BUILD=true) keeps its restore/intermediate files in obj-build/, so the
+       editor's obj/ (reading mode) is never overwritten by a build. -->
+  <PropertyGroup Condition="'$(R2_BUILD)' != ''">
+    <BaseIntermediateOutputPath>obj-build/</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <!-- Never compile generated files from either intermediate folder into the other mode. -->
+  <PropertyGroup>
+    <DefaultItemExcludes>$(DefaultItemExcludes);obj/**;obj-build/**</DefaultItemExcludes>
+  </PropertyGroup>
+</Project>

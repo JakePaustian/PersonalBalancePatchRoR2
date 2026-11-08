@@ -1,0 +1,53 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!-- RoR2 runs on Unity's Mono runtime; netstandard2.1 is what it can load. -->
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>FirstMod</AssemblyName>
+    <Nullable>disable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>portable</DebugType>
+
+    <!-- r2modman profile the built DLL is copied into. Create it in r2modman first. -->
+    <R2Profile>Dev</R2Profile>
+    <R2ProfileDir>$(HOME)/.config/r2modmanPlus-local/RiskOfRain2/profiles/$(R2Profile)</R2ProfileDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Compile-time references only: the game already ships these at runtime. -->
+    <PackageReference Include="BepInEx.Analyzers" Version="1.0.8" PrivateAssets="all" />
+    <PackageReference Include="BepInEx.Core" Version="5.4.21" />
+    <PackageReference Include="UnityEngine.Modules" Version="2021.3.45" IncludeAssets="compile" />
+    <PackageReference Include="MMHOOK.RoR2" Version="2026.10.8" NoWarn="NU1701" />
+    <!-- R2API Core: provides [NetworkCompatibility] and R2API.R2API.PluginGUID (same version as the Dev profile). -->
+    <PackageReference Include="R2API.Core" Version="5.3.0" />
+    <PackageReference Include="R2API.Language" Version="1.1.0" />
+  </ItemGroup>
+
+  <!-- BUILD MODE: only when -p:R2_BUILD=true (see build.sh). Compiles against the NuGet reference
+       package, which is publicized so private game members are accessible to the compiler.
+       Intermediate files go to obj-build/ (see Directory.Build.props). -->
+  <ItemGroup Condition="'$(R2_BUILD)' != ''">
+    <PackageReference Include="RiskOfRain2.GameLibs" Version="1.5.0-r.1" />
+  </ItemGroup>
+
+  <!-- READING MODE (default; what the editor/LSP sees): RoR2 comes from the decompiled project in
+       GameSource/, and the other game assemblies come straight from the Steam install so base
+       types like NetworkBehaviour resolve. Editor-only: do not build this way (use build.sh). -->
+  <PropertyGroup Condition="'$(R2_BUILD)' == ''">
+    <GameManaged>$(HOME)/.local/share/Steam/steamapps/common/Risk of Rain 2/Risk of Rain 2_Data/Managed</GameManaged>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(R2_BUILD)' == ''">
+    <ProjectReference Include="../GameSource/RoR2/RoR2.csproj" />
+    <GameAsm Include="Assembly-CSharp;AsyncManagement;com.unity.multiplayer-hlapi.Runtime;Decalicious;Grumpy;HGCSharpUtils;HGUnityUtils;KinematicCharacterController;LegacyResourcesAPI;Newtonsoft.Json;Rewired_Core;Rewired_CSharp;SimpleJSON;Unity.Addressables;Unity.ResourceManager;Unity.TextMeshPro;Unity.Postprocessing.Runtime;UnityEngine.UI;Ak.Wwise.Api.WAAPI;AK.Wwise.Unity.API;AK.Wwise.Unity.API.WwiseTypes;AK.Wwise.Unity.MonoBehaviour;AK.Wwise.Unity.Timeline" />
+    <Reference Include="@(GameAsm->'$(GameManaged)/%(Identity).dll')" />
+  </ItemGroup>
+
+  <!-- After every build, drop the DLL into the r2modman profile (if it has BepInEx installed). -->
+  <Target Name="DeployToProfile" AfterTargets="Build" Condition="Exists('$(R2ProfileDir)/BepInEx')">
+    <Copy SourceFiles="$(TargetPath);$(TargetDir)$(TargetName).pdb"
+          DestinationFolder="$(R2ProfileDir)/BepInEx/plugins/$(AssemblyName)" />
+    <Message Importance="high" Text="Deployed $(TargetFileName) -> profile '$(R2Profile)'" />
+  </Target>
+</Project>
