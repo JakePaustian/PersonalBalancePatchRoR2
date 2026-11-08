@@ -9,3 +9,6 @@ GameSource/
 # Packaged mod zips
 dist/
 *.zip
+
+# Personal save backups: never publish
+backup savefile/
